@@ -26,19 +26,23 @@ class FFNN(nn.Module):
 
         self.softmax = nn.LogSoftmax() # The softmax function that converts vectors into probability distributions; computes log probabilities for computational benefits
         self.loss = nn.NLLLoss() # The cross-entropy/negative log likelihood loss taught in class
+        self.hidden_layer = nn.Linear(input_dim, h)
+        self.output_layer = nn.Linear(h, self.output_dim)
+
 
     def compute_Loss(self, predicted_vector, gold_label):
         return self.loss(predicted_vector, gold_label)
 
     def forward(self, input_vector):
-        # [to fill] obtain first hidden layer representation
-
-        # [to fill] obtain output layer representation
-
-        # [to fill] obtain probability dist.
-
+    #1: obtain first hidden layer representation
+        hidden_output = self.hidden_layer(input_vector)
+    #2: apply ReLU activation
+        hidden_output = self.activation(hidden_output)
+    #3: obtain output layer representation (logits)
+        output_logits = self.output_layer(hidden_output)
+    #4: obtain probability distribution using softmax
+        predicted_vector = torch.softmax(output_logits, dim=0)
         return predicted_vector
-
 
 # Returns: 
 # vocab = A set of strings corresponding to the vocabulary

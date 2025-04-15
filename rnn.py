@@ -29,16 +29,17 @@ class RNN(nn.Module):
     def compute_Loss(self, predicted_vector, gold_label):
         return self.loss(predicted_vector, gold_label)
 
-    def forward(self, inputs):
-        # [to fill] obtain hidden layer representation (https://pytorch.org/docs/stable/generated/torch.nn.RNN.html)
-        _, hidden = 
-        # [to fill] obtain output layer representations
+    def forward(self, inputs): 
+        #1: Pass the input through the RNN 
+        _, hidden = self.rnn(inputs) #hidden: shape [num_layers, batch, hidden_size]
+        #2: Extract final hidden state (from the top layer) 
+        hidden = hidden[-1]  #shape: [1, hidden_size] or [hidden_size] 
+        #3: Apply linear transformation to hidden state 
+        output = self.W(hidden)  #shape: [5] 
+        #4: Compute probability distribution 
+        predicted_vector = self.softmax(output.view(1, -1))  #shape: [1, 5] 
+        return predicted_vector 
 
-        # [to fill] sum over output 
-
-        # [to fill] obtain probability dist.
-
-        return predicted_vector
 
 
 def load_data(train_data, val_data):
